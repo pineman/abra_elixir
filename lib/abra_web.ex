@@ -43,7 +43,6 @@ defmodule AbraWeb do
         layouts: [html: AbraWeb.Layouts]
 
       import Plug.Conn
-      import AbraWeb.Gettext
 
       unquote(verified_routes())
     end
@@ -85,7 +84,6 @@ defmodule AbraWeb do
       import Phoenix.HTML
       # Core UI components and translation
       import AbraWeb.CoreComponents
-      import AbraWeb.Gettext
 
       # Shortcut for generating JS commands
       alias Phoenix.LiveView.JS

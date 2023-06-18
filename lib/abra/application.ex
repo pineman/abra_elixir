@@ -12,8 +12,6 @@ defmodule Abra.Application do
       AbraWeb.Telemetry,
       # Start the PubSub system
       {Phoenix.PubSub, name: Abra.PubSub},
-      # Start Finch
-      {Finch, name: Abra.Finch},
       # Start the Endpoint (http/https)
       AbraWeb.Endpoint
       # Start a worker by calling: Abra.Worker.start_link(arg)

@@ -13,7 +13,7 @@ config :abra, AbraWeb.Endpoint,
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
-  secret_key_base: "2pyaMUjoBxGVsC3Qx8A66bevJetcPbTKIV8kwppNnvHDTXtycuqOTEncO/auTptF",
+  secret_key_base: "Ztmt2FlLnHg8BWb4dP/0goOS5jPfydzHyOVIbhP4j1Z4gRVhtXFA+l7FhuI9U0bQ",
   watchers: [
     esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]},
     tailwind: {Tailwind, :install_and_run, [:default, ~w(--watch)]}
@@ -47,7 +47,6 @@ config :abra, AbraWeb.Endpoint,
   live_reload: [
     patterns: [
       ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
-      ~r"priv/gettext/.*(po)$",
       ~r"lib/abra_web/(controllers|live|components)/.*(ex|heex)$"
     ]
   ]
@@ -64,6 +63,3 @@ config :phoenix, :stacktrace_depth, 20
 
 # Initialize plugs at runtime for faster development compilation
 config :phoenix, :plug_init_mode, :runtime
-
-# Disable swoosh api client as it is only required for production adapters.
-config :swoosh, :api_client, false

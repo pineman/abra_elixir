@@ -4,15 +4,8 @@ import Config
 # you can enable the server option below.
 config :abra, AbraWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
-  secret_key_base: "MokILOfqjTR89pnSoF2WopApEudxUiS7EycKkUZSTkJhuGZDQEcUO7/+Wmx58k9a",
+  secret_key_base: "x8RYPVUoEh1ZrtYsvzap5Q9TY6NLTvbMlePkuL4IcCGXAOiZRTH7HJew0L0pMwMl",
   server: false
-
-# In test we don't send emails.
-config :abra, Abra.Mailer,
-  adapter: Swoosh.Adapters.Test
-
-# Disable swoosh api client as it is only required for production adapters.
-config :swoosh, :api_client, false
 
 # Print only warnings and errors during test
 config :logger, level: :warning

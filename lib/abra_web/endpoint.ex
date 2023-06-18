@@ -7,7 +7,7 @@ defmodule AbraWeb.Endpoint do
   @session_options [
     store: :cookie,
     key: "_abra_key",
-    signing_salt: "Jcjc2N3D",
+    signing_salt: "lMfd/6gv",
     same_site: "Lax"
   ]
 
