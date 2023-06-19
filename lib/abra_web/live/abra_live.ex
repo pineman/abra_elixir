@@ -10,6 +10,8 @@ defmodule AbraWeb.AbraLive do
   end
 
   def render(assigns) do
+    # TODO: this is sending ALL spans on an update.
+    # figure out why / a better way
     ~H"""
     <div class="font-mono flex">
       <%= for {c, i} <- Enum.with_index(String.graphemes((@text))) do %>

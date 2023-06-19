@@ -8,7 +8,7 @@ defmodule AbraWeb.AbraComponents do
 
   def char(assigns) do
     ~H"""
-    <span class={if @char_index == @pos, do: "bg-red-400", else: nil}>
+    <span class={if @char_index == @pos, do: "bg-red-400"}>
       <%= if @char == " ", do: raw("&nbsp;"), else: @char %>
     </span>
     """
