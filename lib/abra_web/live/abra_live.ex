@@ -11,15 +11,17 @@ defmodule AbraWeb.AbraLive do
     # TODO: this is sending ALL spans on an update.
     # figure out why / a better way
     ~H"""
-    <div class="font-mono flex">
+    <div class="font-mono flex justify-center">
       <%= for {c, i} <- Enum.with_index(String.graphemes((@text))) do %>
         <span class={if i == @pos, do: "bg-red-400"}>
           <%= if c == " ", do: raw("&nbsp;"), else: c %>
         </span>
       <% end %>
     </div>
-    <button phx-click="up">+</button>
-    <button phx-click="down">-</button>
+    <div class="font-mono flex justify-evenly">
+      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" phx-click="up">+</button>
+      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" phx-click="down">-</button>
+    </div>
     """
   end
 
