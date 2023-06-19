@@ -11,9 +11,10 @@ defmodule AbraWeb.AbraLive do
 
   def render(assigns) do
     ~H"""
-    <div class="font-mono">
-      <!-- Unfortunately, the lack of newlines around the char component is load bearing-->
-      <%= for {c, i} <- Enum.with_index(String.graphemes((@text))) do %><.char char={c} char_index={i} pos={@pos} /><% end %>
+    <div class="font-mono flex">
+      <%= for {c, i} <- Enum.with_index(String.graphemes((@text))) do %>
+        <.char char={c} char_index={i} pos={@pos} />
+      <% end %>
     </div>
     <button phx-click="up">+</button>
     <button phx-click="down">-</button>
@@ -21,12 +22,12 @@ defmodule AbraWeb.AbraLive do
   end
 
   def handle_event("up", _unsigned_params, socket) do
-    socket = update(socket, :pos, &(&1+1))
+    socket = update(socket, :pos, &(&1 + 1))
     {:noreply, socket}
   end
 
   def handle_event("down", _unsigned_params, socket) do
-    socket = update(socket, :pos, &(&1-1))
+    socket = update(socket, :pos, &(&1 - 1))
     {:noreply, socket}
   end
 end
