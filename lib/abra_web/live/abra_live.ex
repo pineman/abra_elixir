@@ -1,8 +1,6 @@
 defmodule AbraWeb.AbraLive do
   use AbraWeb, :live_view
 
-  import AbraWeb.AbraComponents
-
   def mount(_params, _session, socket) do
     socket = assign(socket, pos: 10)
     socket = assign(socket, text: "This is a test string")
@@ -15,7 +13,9 @@ defmodule AbraWeb.AbraLive do
     ~H"""
     <div class="font-mono flex">
       <%= for {c, i} <- Enum.with_index(String.graphemes((@text))) do %>
-        <.char char={c} char_index={i} pos={@pos} />
+        <span class={if i == @pos, do: "bg-red-400"}>
+          <%= if c == " ", do: raw("&nbsp;"), else: c %>
+        </span>
       <% end %>
     </div>
     <button phx-click="up">+</button>
