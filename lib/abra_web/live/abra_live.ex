@@ -2,6 +2,7 @@ defmodule AbraWeb.AbraLive do
   use AbraWeb, :live_view
 
   def mount(_params, _session, socket) do
+    Phoenix.PubSub.subscribe(Abra.PubSub, "typed")
     text = "This is a test string" |> String.graphemes() |> Enum.with_index()
     {:ok, assign(socket, pos: 0, text: text)}
   end
@@ -43,12 +44,20 @@ defmodule AbraWeb.AbraLive do
   end
 
   def handle_event("up", _unsigned_params, socket) do
-    socket = update(socket, :pos, &(&1 + 1))
+    Phoenix.PubSub.broadcast(Abra.PubSub, "typed", {:up, :me})
     {:noreply, socket}
   end
 
+  def handle_info({:up, :me}, socket) do
+    {:noreply, update(socket, :pos, &(&1 + 1))}
+  end
+
   def handle_event("down", _unsigned_params, socket) do
-    socket = update(socket, :pos, &(&1 - 1))
+    Phoenix.PubSub.broadcast(Abra.PubSub, "typed", {:down, :me})
     {:noreply, socket}
+  end
+
+  def handle_info({:down, :me}, socket) do
+    {:noreply, update(socket, :pos, &(&1 - 1))}
   end
 end
