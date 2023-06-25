@@ -17,14 +17,14 @@ defmodule Abra.MixProject do
   #
   # Type `mix help compile.app` for more information.
   def application do
-
     extra_applications = [:logger, :runtime_tools]
-    if Mix.env() == :dev do
-      
-    end
+
+    extra_applications =
+      if Mix.env() == :dev, do: [:os_mon | extra_applications], else: extra_applications
+
     [
       mod: {Abra.Application, []},
-      extra_applications: [:logger, :runtime_tools, :os_mon]
+      extra_applications: extra_applications
     ]
   end
 
