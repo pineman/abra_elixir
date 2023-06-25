@@ -2,20 +2,18 @@ defmodule AbraWeb.AbraLive do
   use AbraWeb, :live_view
 
   def mount(_params, _session, socket) do
-    socket = assign(socket, pos: 10)
-    socket = assign(socket, text: "This is a test string")
-    {:ok, socket}
+    {:ok, assign(socket, pos: 10, text: "This is a test string")}
   end
 
   def render(assigns) do
     # TODO: this is sending ALL spans on an update.
     # figure out why / a better way
+    # TODO: since this is a game, we should update the client highlight pos
+    # immediately & only then send to the server.
     ~H"""
     <div class="font-mono flex justify-center">
       <%= for {c, i} <- Enum.with_index(String.graphemes((@text))) do %>
-        <span class={if i == @pos, do: "bg-red-400"}>
-          <%= if c == " ", do: raw("&nbsp;"), else: c %>
-        </span>
+        <.live_component module={AbraWeb.AbraLiveComponent} id={i} c={c} active={i == @pos} />
       <% end %>
     </div>
     <div class="font-mono flex justify-evenly">
