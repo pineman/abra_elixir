@@ -26,8 +26,18 @@ defmodule AbraWeb.AbraLive do
         <.live_component module={CharComponent} id={i} c={c} active={i == @pos} />
       <% end %>
     </div>
-    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" phx-click="up">+</button>
-    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" phx-click="down">-</button>
+    <button
+      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      phx-click="up"
+    >
+      +
+    </button>
+    <button
+      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      phx-click="down"
+    >
+      -
+    </button>
     """
   end
 
