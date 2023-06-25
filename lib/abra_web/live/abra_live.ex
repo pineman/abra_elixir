@@ -2,7 +2,8 @@ defmodule AbraWeb.AbraLive do
   use AbraWeb, :live_view
 
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, pos: 0, text: "This is a test string")}
+    text = "This is a test string" |> String.graphemes() |> Enum.with_index()
+    {:ok, assign(socket, pos: 0, text: text)}
   end
 
   defmodule CharComponent do
@@ -22,7 +23,7 @@ defmodule AbraWeb.AbraLive do
     # immediately & only then send to the server.
     ~H"""
     <div class="font-mono flex">
-      <%= for {c, i} <- Enum.with_index(String.graphemes((@text))) do %>
+      <%= for {c, i} <- @text do %>
         <.live_component module={CharComponent} id={i} c={c} active={i == @pos} />
       <% end %>
     </div>
