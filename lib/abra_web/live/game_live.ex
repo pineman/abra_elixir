@@ -1,4 +1,4 @@
-defmodule AbraWeb.AbraLive do
+defmodule AbraWeb.GameLive do
   use AbraWeb, :live_view
 
   def mount(_params, _session, socket) do
@@ -48,13 +48,13 @@ defmodule AbraWeb.AbraLive do
     {:noreply, socket}
   end
 
-  def handle_info({:up, :me}, socket) do
-    {:noreply, update(socket, :pos, &(&1 + 1))}
-  end
-
   def handle_event("down", _unsigned_params, socket) do
     Phoenix.PubSub.broadcast(Abra.PubSub, "typed", {:down, :me})
     {:noreply, socket}
+  end
+
+  def handle_info({:up, :me}, socket) do
+    {:noreply, update(socket, :pos, &(&1 + 1))}
   end
 
   def handle_info({:down, :me}, socket) do
