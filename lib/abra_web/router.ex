@@ -17,6 +17,7 @@ defmodule AbraWeb.Router do
   scope "/", AbraWeb do
     pipe_through :browser
 
+    live "/", HomeLive
     live "/game", GameLive
   end
 

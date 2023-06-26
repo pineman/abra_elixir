@@ -1,8 +1,10 @@
 defmodule AbraWeb.GameLive do
   use AbraWeb, :live_view
 
+  # mount can be called twice (once by the normal http request, and again
+  # by browser javascript to establish websocket connection.
   def mount(_params, _session, socket) do
-    Phoenix.PubSub.subscribe(Abra.PubSub, "typed")
+    if connected?(socket), do: Phoenix.PubSub.subscribe(Abra.PubSub, "typed")
     text = "This is a test string" |> String.graphemes() |> Enum.with_index()
     {:ok, assign(socket, pos: 0, text: text)}
   end
