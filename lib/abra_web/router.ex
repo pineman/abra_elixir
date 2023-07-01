@@ -18,7 +18,6 @@ defmodule AbraWeb.Router do
     pipe_through :browser
 
     live "/", HomeLive
-    live "/game", GameLive
   end
 
   # Other scopes may use custom stacks.
