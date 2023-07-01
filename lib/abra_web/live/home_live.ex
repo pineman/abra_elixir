@@ -13,51 +13,49 @@ defmodule AbraWeb.HomeLive do
     end
   end
 
-  # mount can be called twice (once by the normal http request, and again
-  # by browser javascript to establish websocket connection.
+  # mount can be called twice - once by the normal http request, and again
+  # by browser javascript to establish the websocket connection.
   def mount(_params, _session, socket) do
     if connected?(socket), do: Phoenix.PubSub.subscribe(Abra.PubSub, "typed")
-    text = "This is a test string" |> String.graphemes() |> Enum.with_index()
-    {:ok, assign(socket, pos: 0, text: text)}
+    {:ok, assign(socket, status: :new)}
   end
 
   def render(assigns) do
+    IO.inspect(assigns)
+
     ~H"""
-    <div id="start">
-      <.button phx-click={
-        JS.show(to: "#game")
-        |> JS.hide()
-        |> JS.push("start", page_loading: false)
-      }>
-        start
-      </.button>
-    </div>
-    <!-- TODO: since this is a game, we should update the client highlight pos
-    immediately & only then send to the server. -->
-    <div id="game" class="hidden">
-      <div id="text" class="font-mono flex">
-        <%= for {c, i} <- @text do %>
-          <.live_component module={CharComponent} id={i} c={c} active={i == @pos} />
-        <% end %>
-      </div>
-      <.button
-        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        phx-click="up"
-      >
-        +
-      </.button>
-      <.button
-        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        phx-click="down"
-      >
-        -
-      </.button>
-    </div>
+    <%= case @status do %>
+      <% :new -> %>
+        <.button phx-click="start">
+          start
+        </.button>
+      <% :start -> %>
+        <!-- TODO: since this is a game, we should update the client highlight pos
+      immediately & only then send to the server. -->
+        <div id="text" class="font-mono flex">
+          <%= for {c, i} <- @text do %>
+            <.live_component module={CharComponent} id={i} c={c} active={i == @pos} />
+          <% end %>
+        </div>
+        <.button
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          phx-click="up"
+        >
+          +
+        </.button>
+        <.button
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          phx-click="down"
+        >
+          -
+        </.button>
+    <% end %>
     """
   end
 
   def handle_event("start", _unsigned_params, socket) do
-    {:noreply, socket}
+    text = "This is a test string" |> String.graphemes() |> Enum.with_index()
+    {:noreply, assign(socket, pos: 0, text: text, status: :start)}
   end
 
   def handle_event("up", _unsigned_params, socket) do
