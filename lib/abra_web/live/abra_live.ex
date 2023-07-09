@@ -1,4 +1,4 @@
-defmodule AbraWeb.HomeLive do
+defmodule AbraWeb.AbraLive do
   use AbraWeb, :live_view
 
   defmodule CharComponent do
@@ -17,7 +17,14 @@ defmodule AbraWeb.HomeLive do
   # by browser javascript to establish the websocket connection.
   def mount(_params, _session, socket) do
     if connected?(socket), do: Phoenix.PubSub.subscribe(Abra.PubSub, "typed")
-    {:ok, assign(socket, status: :new, names: ["pineman"], pos: 0, text: [])}
+
+    {:ok,
+     assign(socket,
+       status: :new,
+       names: [],
+       text: [],
+       pos: 0
+     )}
   end
 
   def render(assigns) do
@@ -58,7 +65,12 @@ defmodule AbraWeb.HomeLive do
   def handle_event("abra:find_room", _unsigned_params, socket) do
     # room = find_room()
     Process.send_after(self(), :found_room, 3000)
-    {:noreply, assign(socket, status: :start)}
+
+    {:noreply,
+     assign(socket,
+       status: :start,
+       names: ["pineman"]
+     )}
   end
 
   def handle_event("abra:player_typed", _unsigned_params, socket) do
