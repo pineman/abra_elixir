@@ -17,54 +17,52 @@ defmodule AbraWeb.HomeLive do
   # by browser javascript to establish the websocket connection.
   def mount(_params, _session, socket) do
     if connected?(socket), do: Phoenix.PubSub.subscribe(Abra.PubSub, "typed")
-    {:ok, assign(socket, status: :new)}
+    {:ok, assign(socket, status: :new, names: ["pineman"], pos: 0, text: [])}
   end
 
   def render(assigns) do
-    IO.inspect(assigns)
-
     ~H"""
-    <%= case @status do %>
-      <% :new -> %>
-        <.button phx-click="start">
-          start
-        </.button>
-      <% :start -> %>
-        <!-- TODO: since this is a game, we should update the client highlight pos
-      immediately & only then send to the server. -->
-        <div id="text" class="font-mono flex">
-          <%= for {c, i} <- @text do %>
-            <.live_component module={CharComponent} id={i} c={c} active={i == @pos} />
-          <% end %>
-        </div>
-        <.button
-          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          phx-click="up"
-        >
-          +
-        </.button>
-        <.button
-          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          phx-click="down"
-        >
-          -
-        </.button>
-    <% end %>
+    <div id="start">
+      <.button phx-click={
+        JS.push("abra:find_room")
+        |> JS.hide(
+          to: "#start",
+          transition: {"transition-all duration-[250ms]", "translate-x-0", "translate-x-[110%]"},
+          time: 275
+        )
+        |> JS.show(
+          to: "#game",
+          transition:
+            {"transition-all duration-[250ms] delay-[275ms]", "translate-x-[110%]", "translate-x-0"},
+          time: 550
+        )
+      }>
+        start
+      </.button>
+    </div>
+    <div id="game" class="hidden">
+      <div id="text" class="font-mono flex">
+        <%= for {c, i} <- @text do %>
+          <.live_component module={CharComponent} id={i} c={c} active={i == @pos} />
+        <% end %>
+      </div>
+      <.button phx-click="abra:player_typed">+</.button>
+      <%= for name <- @names do %>
+        <p><%= name %></p>
+      <% end %>
+    </div>
+    <div id="stats" class="hidden"></div>
     """
   end
 
-  def handle_event("start", _unsigned_params, socket) do
-    text = "This is a test string" |> String.graphemes() |> Enum.with_index()
-    {:noreply, assign(socket, pos: 0, text: text, status: :start)}
+  def handle_event("abra:find_room", _unsigned_params, socket) do
+    # room = find_room()
+    Process.send_after(self(), :found_room, 3000)
+    {:noreply, assign(socket, status: :start)}
   end
 
-  def handle_event("up", _unsigned_params, socket) do
+  def handle_event("abra:player_typed", _unsigned_params, socket) do
     Phoenix.PubSub.broadcast(Abra.PubSub, "typed", {:up, :me})
-    {:noreply, socket}
-  end
-
-  def handle_event("down", _unsigned_params, socket) do
-    Phoenix.PubSub.broadcast(Abra.PubSub, "typed", {:down, :me})
     {:noreply, socket}
   end
 
@@ -72,7 +70,13 @@ defmodule AbraWeb.HomeLive do
     {:noreply, update(socket, :pos, &(&1 + 1))}
   end
 
-  def handle_info({:down, :me}, socket) do
-    {:noreply, update(socket, :pos, &(&1 - 1))}
+  def handle_info(:found_room, socket) do
+    {:noreply, assign(socket, text: get_text())}
+  end
+
+  defp get_text() do
+    "This is a test string"
+    |> String.graphemes()
+    |> Enum.with_index()
   end
 end
