@@ -7,7 +7,7 @@
   - could probably also do some ets table.
   - use pubsub with a randomly generated room name as the topic
   - probably don't need Phoenix.Presence? there's probably a disconnect message for handle_info.
-- CharComponent should probably be replaced by js interop as well https://hexdocs.pm/phoenix_live_view/js-interop.html#handling-server-pushed-events
+- CharComponent should probably be replaced by js interop as well https://hexdocs.pm/phoenix_live_view/js-interop.html#handling-server-pushed-events. functional component has been tried in the git log. didn't try streams though: https://hexdocs.pm/phoenix_live_view/Phoenix.LiveView.html#stream/4
 
 https://hexdocs.pm/phoenix_live_view/form-bindings.html \
 https://hexdocs.pm/phoenix_live_view/Phoenix.Component.html#live_render/3 \
