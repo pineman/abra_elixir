@@ -21,6 +21,7 @@ https://fly.io/phoenix-files/a-liveview-is-a-process/?utm_medium=email&utm_sourc
 https://fly.io/phoenix-files/js-push-loading-options/ \
 https://alembic.com.au/blog/improve-ux-with-liveview-page-transitions \
 https://elixirschool.com/blog/live-view-with-channels \
-https://elixirschool.com/blog/live-view-with-presence/
+https://elixirschool.com/blog/live-view-with-presence/ \
+https://dashbit.co/blog/latency-rendering-liveview
 
 https://phoenixdiff.org/?source=1.7.6&source_variant=default&target=1.7.7&target_variant=default
