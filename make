@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+clean() {
+  mix clean
+  mix local.hex
+  mix deps.get
+}
+
 run() {
   mix phx.server
 }
